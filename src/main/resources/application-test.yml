@@ -1,0 +1,15 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: retail-account
+          uri: lb://RETAIL-BANKING
+          predicates:
+            - Path=/digi/retailbank/v1/**
+          filters:
+            - name: Hystrix
+              args:
+                name: retail-account
+                fallbackUri: forward:/fallback/accountFallback
+            - name: AccountPreFilter
+            - name: AccountPostFilter
